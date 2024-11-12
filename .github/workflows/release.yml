@@ -1,31 +1,31 @@
 ---
 name: Publish to PyPI and TestPyPI
 on:
-    push:
-        tags:
-            - v[0-9]+.[0-9]+.[0-9]+
-            - v[0-9]+.[0-9]+.[0-9]+a[0-9]+
-            - v[0-9]+.[0-9]+.[0-9]+b[0-9]+
-            - v[0-9]+.[0-9]+.[0-9]+rc[0-9]+
+  push:
+    tags:
+      - v[0-9]+.[0-9]+.[0-9]+
+      - v[0-9]+.[0-9]+.[0-9]+a[0-9]+
+      - v[0-9]+.[0-9]+.[0-9]+b[0-9]+
+      - v[0-9]+.[0-9]+.[0-9]+rc[0-9]+
 jobs:
-    build-n-publish:
-        name: Publish to PyPI and TestPyPI
-        runs-on: ubuntu-24.04
-        environment:
-            name: release
-        permissions:
+  build-n-publish:
+    name: Publish to PyPI and TestPyPI
+    runs-on: ubuntu-24.04
+    environment:
+      name: release
+    permissions:
       # For PyPI's trusted publishing.
-            id-token: write
-        steps:
-            - name: Install uv
-              uses: astral-sh/setup-uv@v3
-            - name: Build Wheel
-              run: uv build
-            - name: Publish Release on GitHub
-              uses: actions/download-artifact@v4
-              with:
-                  pattern: wheels-*
-                  path: wheels
-                  merge-multiple: true
-            - name: Publish to PyPI
-              run: uv publish --verbose dist/*
+      id-token: write
+    steps:
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+      - name: Build Wheel
+        run: uv build
+      - name: Publish Release on GitHub
+        uses: actions/download-artifact@v4
+        with:
+          pattern: wheels-*
+          path: wheels
+          merge-multiple: true
+      - name: Publish to PyPI
+        run: uv publish --verbose dist/*
